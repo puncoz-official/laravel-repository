@@ -1,5 +1,5 @@
 {
-    "name": "jobins/laravel-repository",
+    "name": "puncoz/laravel-repository",
     "description": "A basic light weight package to implement Repository Design Pattern in Laravel.",
     "keywords": [
         "jobins",
