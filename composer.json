@@ -17,16 +17,16 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/database": "^9.0|^10.0",
-        "illuminate/support": "^9.0|^10.0",
-        "league/fractal": "^0.19.2"
+        "illuminate/database": "^9.0|^10.0|^11.0",
+        "illuminate/support": "^9.0|^10.0|^11.0",
+        "league/fractal": "^0.20.1"
     },
     "require-dev": {
-        "nunomaduro/larastan": "^2.0",
-        "orchestra/testbench": "^7.0",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0"
+        "larastan/larastan": "^2.9",
+        "orchestra/testbench": "^7.49",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-deprecation-rules": "^1.2",
+        "phpstan/phpstan-phpunit": "^1.4"
     },
     "autoload": {
         "psr-4": {
