@@ -62,6 +62,17 @@ echo $laravelRepository->echoPhrase('Hello, JoBins!');
 composer test
 ```
 
+## To produce file
+register this in RepositoryServiceProvider.php
+```bash
+// Register console commands only if running in the console in register.
+if ($this->app->runningInConsole()) {
+    $this->commands([
+        \JoBins\LaravelRepository\Console\Commands\MakeRepositoryCommand::class,
+    ]);
+}
+```    
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
