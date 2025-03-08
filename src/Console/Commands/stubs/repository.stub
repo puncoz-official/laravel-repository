@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Repositories{{ namespace }};
+namespace {{ namespace }};
 
-use App\Models{{ modelNamespace }}\{{ modelName }};
+use {{ modelNamespace }}\{{ modelName }};
 use App\Repositories\Base\Repository;
-use App\Repositories{{ namespace }}\Interfaces\{{ className }}Interface;
+use {{ interfaceNamespace }}\{{ className }}Interface;
 
 class {{ className }} extends Repository implements {{ className }}Interface
 {
-    /**
-     * Specify Model class name.
-     *
-     * @return string
-     */
-    public function model(): string
-    {
-        return {{ modelName }}::class;
-    }
+  /**
+    * Specify Model class name.
+    *
+    * @return string
+    */
+  public function model(): string
+  {
+    return {{ modelName }}::class;
+  }
 }

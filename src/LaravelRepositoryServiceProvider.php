@@ -3,8 +3,11 @@
 namespace JoBins\LaravelRepository;
 
 use Illuminate\Support\ServiceProvider;
-use JoBins\LaravelRepository\Providers\RepositoryEventServiceProvider;
+use JoBins\LaravelRepository\Console\Commands\MakeFilterCommand;
+use JoBins\LaravelRepository\Console\Commands\MakeRepositoryCommand;
+use JoBins\LaravelRepository\Console\Commands\MakeTransformerCommand;
 use JoBins\LaravelRepository\Providers\VendorOverrideServiceProvider;
+use JoBins\LaravelRepository\Providers\RepositoryEventServiceProvider;
 
 /**
  * Class LaravelRepositoryServiceProvider
@@ -20,6 +23,21 @@ class LaravelRepositoryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MakeRepositoryCommand::class,
+                MakeTransformerCommand::class,
+                MakeFilterCommand::class,
+            ]);
+
+            // Uncomment the following if you want to allow developers
+            // to publish your stubs to their own application's folders.
+            /*
+            $this->publishes([
+                __DIR__ . '/Console/stubs' => base_path('stubs/laravel-repository'),
+            ], 'stubs');
+            */
+        }
         $this->publishes([
             __DIR__.'/../config/repository.php' => config_path('repository.php'),
         ]);
