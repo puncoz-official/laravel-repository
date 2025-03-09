@@ -4,4 +4,4 @@ docker run -it --rm \
         --name my-running-script \
         -v "$PWD":/usr/src/myapp \
         -w /usr/src/myapp \
-        php:8.1-cli php "$@"
+        php:8.2-cli php "$@"
