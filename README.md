@@ -1,70 +1,303 @@
-# A basic light weight package to implement Repository Design Pattern in Laravel.
+# Laravel Repository Pattern Implementation
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/jobins/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/jobins/laravel-repository)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/jobins/laravel-repository/run-tests?label=tests)](https://github.com/jobins/laravel-repository/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/jobins/laravel-repository/Check%20&%20fix%20styling?label=code%20style)](https://github.com/jobins/laravel-repository/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/jobins/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/jobins/laravel-repository)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/puncoz/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/puncoz/laravel-repository)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/puncoz/laravel-repository/run-tests?label=tests)](https://github.com/puncoz/laravel-repository/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/puncoz/laravel-repository/Check%20&%20fix%20styling?label=code%20style)](https://github.com/puncoz/laravel-repository/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/puncoz/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/puncoz/laravel-repository)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+A lightweight and flexible implementation of the Repository Pattern for Laravel applications. This package provides a clean and consistent way to handle data access layers in your Laravel applications.
 
-## Support us
+## Features
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-repository.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-repository)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+- Clean and simple Repository Pattern implementation
+- Built-in filtering system with criteria pattern
+- Data transformation using Fractal
+- Scope query support
+- Soft delete handling
+- Eloquent model integration
+- Flexible and extensible architecture
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require jobins/laravel-repository
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="laravel-repository-migrations"
-php artisan migrate
+composer require puncoz/laravel-repository
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-repository-config"
+php artisan vendor:publish --provider="JoBins\LaravelRepository\LaravelRepositoryServiceProvider"
 ```
 
-This is the contents of the published config file:
+## Basic Usage
+
+1. Create a repository interface:
 
 ```php
-return [
+use JoBins\LaravelRepository\Contracts\RepositoryInterface;
+
+interface UserRepository extends RepositoryInterface
+{
+    // Add custom methods if needed
+}
+```
+
+2. Create a repository implementation:
+
+```php
+use JoBins\LaravelRepository\LaravelRepository;
+use App\Models\User;
+
+class UserEloquentRepository extends LaravelRepository implements UserRepository
+{
+    public function model(): string
+    {
+        return User::class;
+    }
+}
+```
+
+3. Register the repositories in the service provider:
+
+```php
+use JoBins\LaravelRepository\LaravelRepositoryServiceProvider;
+
+class RepositoryServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        // ideally (for larger apps) recommended to maintain these bindings in config file (bindings/repositories.php)
+        // bindings/repositories.php
+        // return [
+        //     UserRepository::class => UserEloquentRepository::class
+        // ];  
+        
+        collect(config('bindings.repositories'))->each(function (string $implementation, string $contract) {
+            $this->app->bind($contract, $implementation);
+        });
+    }
+}
+```
+
+4. Use the repository in your application:
+
+```php
+class UserController extends Controller
+{
+    public function __construct(
+        private UserRepository $repository
+    ) {}
+
+    public function index()
+    {
+        $users = $this->repository->all();
+        
+        return view('users.index', compact('users'));
+    }
+}
+```
+
+## Available Methods
+
+### Basic Operations
+- `all(array $columns = ['*'])`: Get all records
+- `find(int|string $modelId, array $columns = ['*'])`: Find by ID
+- `findByField(string $field, mixed $value, array $columns = ['*'])`: Find by field
+- `getByField(string $field, mixed $value, array $columns = ['*'])`: Get multiple (list/collection) by field
+- `create(array $data)`: Create new record
+- `update(array $data, int|string $modelId)`: Update record
+- `delete(int|string $modelId)`: Delete record
+- `deleteWhere(array $where)`: Delete by conditions
+- `updateOrCreate(array $queries, array $values = [])`: Update or create record
+
+### Filtering and Scopes
+- `filter(FilterCriteria $filter)`: Apply filter criteria
+- `skipFilters(bool $status = true)`: Skip filters
+- `resetFilters()`: Reset all filters
+- `scopeQuery(Closure $scopeQuery)`: Add query scope
+
+### Data Transformation
+- `setTransformer(TransformerAbstract|string $transformer)`: Set transformer
+- `skipTransformer(bool $skip = true)`: Skip transformation
+- `present(Collection|AbstractPaginator|Model $data)`: Present data using transformer
+
+### Relations
+- `with(string|array $relations)`: Eager load relations
+- `setIncludes(array|string $includes)`: Set transformer includes
+
+## Creating Custom Filters
+
+1. Create a filter class:
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+use JoBins\LaravelRepository\Filters\Filterable;
+
+class UserFilter extends Filterable
+{
+    /**
+     * Hook that runs before any filter methods
+     * [optional method]
+     */
+    public function preHook(Builder $query, array $filters): Builder
+    {
+        return $query;
+    }
+
+    /**
+     * Filter method for 'search' query/filter parameter
+     * Method name must be in camelCase with 'Filter' suffix
+     * Second parameter will be the value from queries/filters array (coming in the constructor)
+     */
+    public function searchFilter(Builder $query, ?string $search): Builder
+    {
+        return $query->where(function (Builder $query) use ($search) {
+            $query->orWhere('name', 'ilike', "%{$search}%")
+                  ->orWhere('email', 'ilike', "%{$search}%");
+        });
+    }
+
+    /**
+     * Filter method for 'status' query/filter parameter
+     */
+    public function statusFilter(Builder $query, ?string $status): Builder
+    {
+        return $query->where('status', $status);
+    }
+
+    /**
+     * Filter method for 'created_at' query/filter parameter
+     * Example of how query/filter parameter names are converted to method names:
+     * 'created_at' => 'createdAtFilter'
+     */
+    public function createdAtFilter(Builder $query, ?string $date): Builder
+    {
+        return $query->whereDate('created_at', $date);
+    }
+
+    /**
+     * Hook that runs after all filter methods
+     */
+    public function postHook(Builder $query, array $filters): Builder
+    {
+        return $query;
+    }
+}
+```
+
+2. Apply the filter with queries:
+
+```php
+// In your controller or service
+$queries = [
+    'search' => 'john',           // Will call searchFilter()
+    'status' => 'active',         // Will call statusFilter()
+    'created_at' => '2025-04-14', // Will call createdAtFilter()
 ];
+
+// or,
+$queries = $request->all();
+
+$users = $repository
+    ->filter(new UserFilter($queries))
+    ->all();
 ```
 
-Optionally, you can publish the views using
+### How Filters Work
 
-```bash
-php artisan vendor:publish --tag="laravel-repository-views"
-```
+1. **Query Parameter to Method Mapping**:
+   - queries/filters array is passed to the constructor
+   - Query/filter parameters (keys in the array passed to the constructor) are automatically mapped to filter methods
+   - Method names must be in camelCase and end with 'Filter' suffix
+   - Examples:
+     - `search` => `searchFilter()`
+     - `user_status` => `userStatusFilter()`
+     - `created_at` => `createdAtFilter()`
 
-## Usage
+2. **Filter Method Signature**:
+   ```php
+   public function someKeyFilter(Builder $query, mixed $value): Builder
+   ```
+   - First parameter: Eloquent Query builder instance
+   - Second parameter: Value from the queries array
+   - Must return: Eloquent Query Builder instance
+
+3. **Filter Lifecycle**:
+   ```
+   preHook -> filterMethods -> postHook
+   ```
+   - `preHook`: Runs before any filter methods
+   - Filter methods: Run in the order they are defined
+   - `postHook`: Runs after all filter methods
+
+4. **Optional Methods**:
+   - All filter methods are optional
+   - `preHook` and `postHook` are optional
+   - Only methods matching query parameters will be called
+
+## Data Transformation
+
+The package uses [Fractal Transformers](https://fractal.thephpleague.com/transformers/) for data transformation. Here's how to implement transformers:
+
+1. Create a transformer class:
 
 ```php
-$laravelRepository = new JoBins\LaravelRepository();
-echo $laravelRepository->echoPhrase('Hello, JoBins!');
+use League\Fractal\TransformerAbstract;
+use App\Models\User;
+
+class UserTransformer extends TransformerAbstract
+{
+    protected array $availableIncludes = [
+        'posts',
+        'comments'
+    ];
+
+    public function transform(User $user): array
+    {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'created_at' => $user->created_at->toISOString(),
+            'updated_at' => $user->updated_at->toISOString(),
+        ];
+    }
+
+    public function includePosts(User $user)
+    {
+        return $this->collection($user->posts, new PostTransformer());
+    }
+
+    public function includeComments(User $user)
+    {
+        return $this->collection($user->comments, new CommentTransformer());
+    }
+}
 ```
 
-## Testing
+2. Use transformation in your application:
 
-```bash
-composer test
+```php
+// Get transformed data
+$users = $repository->all(); // Returns non-transformed data (collection)
+
+// Set transformer to the repository
+// All subsequent queries (all, find, findByField, getByField etc.) will use this transformer and return transformed data
+$users = $repository->setTransformer(UserTransformer::class)->all();
+
+// Include relations in transformation
+$users = $repository
+    ->setTransformer(UserTransformer::class)
+    ->setIncludes(['posts', 'comments'])
+    ->all();
+
+// Skip transformer for specific query
+$rawUsers = $repository
+    ->skipTransformer()
+    ->all(); // Returns raw data
 ```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
 ## Contributing
 
