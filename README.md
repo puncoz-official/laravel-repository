@@ -1,8 +1,8 @@
 # Laravel Repository Pattern Implementation
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/puncoz/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/puncoz/laravel-repository)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/puncoz/laravel-repository/run-tests?label=tests)](https://github.com/puncoz/laravel-repository/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/puncoz/laravel-repository/Check%20&%20fix%20styling?label=code%20style)](https://github.com/puncoz/laravel-repository/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/puncoz-official/laravel-repository/run-tests?label=tests)](https://github.com/puncoz-official/laravel-repository/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/puncoz-official/laravel-repository/Check%20&%20fix%20styling?label=code%20style)](https://github.com/puncoz-official/laravel-repository/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/puncoz/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/puncoz/laravel-repository)
 
 A lightweight and flexible implementation of the Repository Pattern for Laravel applications. This package provides a clean and consistent way to handle data access layers in your Laravel applications.
