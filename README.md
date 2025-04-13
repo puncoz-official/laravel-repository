@@ -1,9 +1,9 @@
-# A basic light weight package to implement Repository Design Pattern in Laravel.
+# A basic lightweight package to implement Repository Design Pattern in Laravel.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/jobins/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/jobins/laravel-repository)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/jobins/laravel-repository/run-tests?label=tests)](https://github.com/jobins/laravel-repository/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/jobins/laravel-repository/Check%20&%20fix%20styling?label=code%20style)](https://github.com/jobins/laravel-repository/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/jobins/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/jobins/laravel-repository)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/puncoz/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/puncoz/laravel-repository)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/puncoz/laravel-repository/run-tests?label=tests)](https://github.com/puncoz/laravel-repository/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/puncoz/laravel-repository/Check%20&%20fix%20styling?label=code%20style)](https://github.com/puncoz/laravel-repository/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/puncoz/laravel-repository.svg?style=flat-square)](https://packagist.org/packages/puncoz/laravel-repository)
 
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
@@ -20,7 +20,7 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 You can install the package via composer:
 
 ```bash
-composer require jobins/laravel-repository
+composer require puncoz/laravel-repository
 ```
 
 You can publish and run the migrations with:
