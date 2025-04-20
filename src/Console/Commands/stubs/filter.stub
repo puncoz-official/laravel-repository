@@ -12,8 +12,16 @@ use JoBins\LaravelRepository\Filters\Filterable;
  */
 class {{ className }} extends Filterable
 {
-  /**
-  * @param Builder $model
-  * @param string $search
-  */
+    /**
+    * @param Builder $query
+    * @param string $search
+    */
+    public function nameFilter(Builder $query, $value): Builder
+    {
+        if (!empty($value)) {
+        return $query->where('name', 'ILIKE', "%$value%");
+        }
+
+        return $query;
+    }
 }

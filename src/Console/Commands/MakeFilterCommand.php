@@ -23,14 +23,14 @@ class MakeFilterCommand extends Command
         $name = $this->argument('name');
 
         // Get filter base path from config (default to 'app/Filters' if not set)
-        $basePath = config('config.filter_path', base_path('app/Filters'));
+        $basePath = config('repository.filter_path', base_path('app/Filters'));
 
         // Convert base path to namespace format (app/Filters → App\Filters)
         $baseNamespace = str_replace('/', '\\', trim(str_replace(app_path(), 'App', $basePath), '/'));
 
         // Ensure uniform case handling (ucfirst)
-        $parts = explode('/', str_replace('\\', '/', $name));
-        $className = ucfirst(array_pop($parts)) . 'ListFilter';
+        $parts        = explode('/', str_replace('\\', '/', $name));
+        $className    = ucfirst(array_pop($parts)) . 'ListFilter';
         $subNamespace = implode('\\', array_map('ucfirst', $parts));
 
         // Construct full namespace dynamically

@@ -39,10 +39,19 @@ class LaravelRepositoryServiceProvider extends ServiceProvider
             */
         }
         $this->publishes([
-            __DIR__.'/../config/repository.php' => config_path('repository.php'),
+            __DIR__ . '/../config/repository.php' => config_path('repository.php'),
         ]);
 
-        $this->mergeConfigFrom(__DIR__.'/../config/repository.php', 'repository');
+        $this->mergeConfigFrom(__DIR__ . '/../config/repository.php', 'repository');
+
+        /**
+         * @var array<string, string> $bindings
+         */
+        $bindings = config('bindings.repositories');
+        collect($bindings)->each(function (string $implementation, string $contract) {
+            $this->app->bind($contract, $implementation);
+        });
+
     }
 
     /**
