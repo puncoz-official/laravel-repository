@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-repository` will be documented in this file.
 
+## New artisan commands - 2025-04-23
+
+### What's Changed
+
+* Make repositories Filter and Transformer by @bhojkamal in https://github.com/puncoz-official/laravel-repository/pull/6
+
+### New Contributors
+
+* @bhojkamal made their first contribution in https://github.com/puncoz-official/laravel-repository/pull/6
+
+**Full Changelog**: https://github.com/puncoz-official/laravel-repository/compare/v1.0.9...v1.1.0
+
 ## v1.0.9 - 2025-04-13
 
 ### What's Changed
