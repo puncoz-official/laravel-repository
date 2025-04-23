@@ -1,0 +1,20 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ modelNamespace }}\{{ modelName }};
+use App\Repositories\Base\Repository;
+use {{ interfaceNamespace }}\{{ interfaceName }};
+
+class {{ className }} extends Repository implements {{ interfaceName }}
+{
+  /**
+    * Specify Model class name.
+    *
+    * @return string
+    */
+  public function model(): string
+  {
+    return {{ modelName }}::class;
+  }
+}

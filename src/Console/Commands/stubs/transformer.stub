@@ -1,0 +1,22 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ modelNamespace }}\{{ modelName }};
+use League\Fractal\TransformerAbstract;
+
+class {{ className }} extends TransformerAbstract
+{
+  /**
+    * Transform a {{ modelName }} into an array.
+    *
+    * @param {{ modelName }} ${{ modelVar }}
+    * @return array<string, mixed>
+    */
+  public function transform({{ modelName }} ${{ modelVar }}): array
+  {
+    return [
+        'id' => ${{ modelVar }}->id,
+    ];
+  }
+}

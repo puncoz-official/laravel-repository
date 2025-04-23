@@ -1,0 +1,27 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Builder;
+use JoBins\LaravelRepository\Filters\Filterable;
+
+/**
+ * Class {{ className }}
+ *
+ * @package {{ namespace }}
+ */
+class {{ className }} extends Filterable
+{
+    /**
+    * @param Builder $query
+    * @param string $search
+    */
+    public function nameFilter(Builder $query, $value): Builder
+    {
+        if (!empty($value)) {
+        return $query->where('name', 'ILIKE', "%$value%");
+        }
+
+        return $query;
+    }
+}
