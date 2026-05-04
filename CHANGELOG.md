@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-repository` will be documented in this file.
 
+## v1.1.1 - 2026-05-04
+
+### What's Changed
+
+* update to support laravel 13. by @bhojkamal in https://github.com/puncoz-official/laravel-repository/pull/7
+
+**Full Changelog**: https://github.com/puncoz-official/laravel-repository/compare/v1.1.0...v1.1.1
+
 ## New artisan commands - 2025-04-23
 
 ### What's Changed
