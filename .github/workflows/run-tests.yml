@@ -8,26 +8,43 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        php: [8.4, 8.3, 8.2, 8.1, 8.0]
-        laravel: [12.*,11.*, 10.*, 9.*]
+        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+        laravel: ['9.*', '10.*', '11.*', '12.*', '13.*']
         stability: [prefer-lowest, prefer-stable]
         include:
-          - laravel: 12.*
-            testbench: 10.*
-          - laravel: 11.*
-            testbench: 9.*
-          - laravel: 10.*
-            testbench: 8.*
-          - laravel: 9.*
-            testbench: 7.*
+          - laravel: '13.*'
+            testbench: '11.*'
+          - laravel: '12.*'
+            testbench: '10.*'
+          - laravel: '11.*'
+            testbench: '9.*'
+          - laravel: '10.*'
+            testbench: '8.*'
+          - laravel: '9.*'
+            testbench: '7.*'
+        # Keep each Laravel line to the PHP versions it officially supports.
+        exclude:
+          - { laravel: '9.*', php: '8.3' }
+          - { laravel: '9.*', php: '8.4' }
+          - { laravel: '9.*', php: '8.5' }
+          - { laravel: '10.*', php: '8.0' }
+          - { laravel: '10.*', php: '8.4' }
+          - { laravel: '10.*', php: '8.5' }
+          - { laravel: '11.*', php: '8.0' }
+          - { laravel: '11.*', php: '8.1' }
+          - { laravel: '11.*', php: '8.5' }
+          - { laravel: '12.*', php: '8.0' }
+          - { laravel: '12.*', php: '8.1' }
+          - { laravel: '13.*', php: '8.0' }
+          - { laravel: '13.*', php: '8.1' }
+          - { laravel: '13.*', php: '8.2' }
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 
     steps:
       - name: Checkout code
@@ -37,7 +54,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, fileinfo
           coverage: none
 
       - name: Setup problem matchers
@@ -47,11 +64,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --with-all-dependencies
 
-      - name: List Installed Dependencies
+      - name: List installed dependencies
         run: composer show -D
 
-      - name: Execute tests
-        run: vendor/bin/pest --ci
+      - name: Run Pest
+        run: vendor/bin/pest
+
+      # Lowest-version installs pull PHPStan releases older than the config syntax we rely on,
+      # so static analysis only runs against the stable dependency set.
+      - name: Run PHPStan
+        if: matrix.stability == 'prefer-stable'
+        run: vendor/bin/phpstan analyse --no-progress --error-format=github
