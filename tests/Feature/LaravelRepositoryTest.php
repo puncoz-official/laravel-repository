@@ -10,6 +10,8 @@ use JoBins\LaravelRepository\Tests\Fixtures\Filters\PostListFilter;
 use JoBins\LaravelRepository\Tests\Fixtures\Filters\PublishedFilter;
 use JoBins\LaravelRepository\Tests\Fixtures\Models\Comment;
 use JoBins\LaravelRepository\Tests\Fixtures\Models\Post;
+use JoBins\LaravelRepository\Tests\Fixtures\Repositories\CommentRepository;
+use JoBins\LaravelRepository\Tests\Fixtures\Repositories\ContractBuilderPostRepository;
 use JoBins\LaravelRepository\Tests\Fixtures\Repositories\NonModelRepository;
 use JoBins\LaravelRepository\Tests\Fixtures\Repositories\PostRepository;
 use JoBins\LaravelRepository\Tests\Fixtures\Repositories\UnresolvableModelRepository;
@@ -237,6 +239,26 @@ it('applies a scope query to the next call only', function () {
 
     expect(postTitles($scoped))->toBe(['second', 'third'])
         ->and(postTitles($this->repository->all()))->toBe(['first', 'second', 'third']);
+});
+
+it('accepts a scope query that returns a relation', function () {
+    $this->first->comments()->create(['body' => 'on first']);
+    $this->second->comments()->create(['body' => 'on second']);
+
+    $comments = $this->app->make(CommentRepository::class)
+        ->scopeQuery(fn () => $this->first->comments())
+        ->all();
+
+    expect($comments->pluck('body')->all())->toBe(['on first']);
+});
+
+it('supports repositories that redeclare the model property with the builder contract', function () {
+    $repository = $this->app->make(ContractBuilderPostRepository::class);
+
+    $scoped = $repository->scopeQuery(fn (Builder $query) => $query->where('views', '>', 15))->all();
+
+    expect(postTitles($scoped))->toBe(['second', 'third'])
+        ->and(postTitles($repository->all()))->toBe(['first', 'second', 'third']);
 });
 
 it('includes soft deleted records when asked', function () {

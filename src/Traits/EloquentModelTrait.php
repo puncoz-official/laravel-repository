@@ -18,7 +18,13 @@ use JoBins\LaravelRepository\Exceptions\LaravelRepositoryException;
  */
 trait EloquentModelTrait
 {
-    protected EloquentBuilder $model;
+    /**
+     * The native type stays the Builder contract so repositories that redeclare `protected Builder $model;`
+     * and scopes returning other contract implementations (e.g. relations) keep working.
+     *
+     * @var EloquentBuilder
+     */
+    protected Builder $model;
 
     abstract public function model(): string;
 

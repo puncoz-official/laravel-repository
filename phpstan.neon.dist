@@ -1,12 +1,10 @@
-includes:
-    - phpstan-baseline.neon
-
 parameters:
     level: 5
     paths:
         - src
         - config
     tmpDir: build/phpstan
+    checkOctaneCompatibility: true
     checkModelProperties: true
     ignoreErrors:
         # CustomScope is swapped in for League\Fractal\Scope at runtime through a class alias
