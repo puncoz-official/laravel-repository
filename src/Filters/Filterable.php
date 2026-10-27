@@ -20,9 +20,7 @@ class Filterable implements FilterCriteria
 
     public function apply(Builder $query): Builder
     {
-        if ( method_exists($this, 'preHook') ) {
-            $query = $this->preHook($query, $this->filters);
-        }
+        $query = $this->preHook($query, $this->filters);
 
         foreach ($this->filters as $key => $value) {
             $key    = Str::of($key)->camel();
@@ -33,11 +31,7 @@ class Filterable implements FilterCriteria
             }
         }
 
-        if ( method_exists($this, 'postHook') ) {
-            $query = $this->postHook($query, $this->filters);
-        }
-
-        return $query;
+        return $this->postHook($query, $this->filters);
     }
 
     public function preHook(Builder $query, array $filters): Builder

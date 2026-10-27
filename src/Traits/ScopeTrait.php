@@ -29,7 +29,7 @@ trait ScopeTrait
 
     protected function applyScope(): self
     {
-        if ( $this->scopeQuery && is_callable($this->scopeQuery) ) {
+        if ( $this->scopeQuery ) {
             $callback    = $this->scopeQuery;
             $this->model = $callback($this->model);
         }

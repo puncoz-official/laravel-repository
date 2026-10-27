@@ -12,7 +12,7 @@ use League\Fractal\Resource\NullResource;
 use League\Fractal\Resource\Primitive;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Scope;
-use League\Fractal\Serializer\SerializerAbstract;
+use League\Fractal\Serializer\Serializer;
 use League\Fractal\TransformerAbstract;
 use ReturnTypeWillChange;
 
@@ -223,7 +223,7 @@ class CustomScope implements JsonSerializable
     /**
      * Convert the current data for this scope to an array.
      *
-     * @return array
+     * @return array|null
      */
     public function toArray()
     {
@@ -380,14 +380,14 @@ class CustomScope implements JsonSerializable
     /**
      * Serialize a resource
      *
-     * @param SerializerAbstract $serializer
+     * @param Serializer         $serializer
      * @param mixed              $data
      *
-     * @return array
+     * @return array|null
      * @internal
      *
      */
-    protected function serializeResource(SerializerAbstract $serializer, $data)
+    protected function serializeResource(Serializer $serializer, $data)
     {
         $resourceKey = $this->resource->getResourceKey();
 

@@ -42,7 +42,7 @@ trait FilterableTrait
 
     public function removeFilter(string $filter): self
     {
-        $this->filters->reject(fn(FilterCriteria $filter) => get_class($filter) === $filter);
+        $this->filters = $this->filters->reject(fn(FilterCriteria $criteria) => $criteria::class === $filter);
 
         return $this;
     }

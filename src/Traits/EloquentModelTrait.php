@@ -5,6 +5,7 @@ namespace JoBins\LaravelRepository\Traits;
 use Closure;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
@@ -17,7 +18,7 @@ use JoBins\LaravelRepository\Exceptions\LaravelRepositoryException;
  */
 trait EloquentModelTrait
 {
-    protected Builder $model;
+    protected EloquentBuilder $model;
 
     abstract public function model(): string;
 

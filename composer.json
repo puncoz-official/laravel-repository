@@ -22,15 +22,22 @@
         "league/fractal": "^0.20.1"
     },
     "require-dev": {
-        "larastan/larastan": "^2.9",
-        "orchestra/testbench": "^7.49",
+        "larastan/larastan": "^2.9|^3.0",
+        "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0|^11.0",
+        "pestphp/pest": "^1.23|^2.34|^3.0|^4.0",
+        "pestphp/pest-plugin-laravel": "^1.4|^2.3|^3.0|^4.0",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan-deprecation-rules": "^1.2",
-        "phpstan/phpstan-phpunit": "^1.4"
+        "phpstan/phpstan-deprecation-rules": "^1.2|^2.0",
+        "phpstan/phpstan-phpunit": "^1.4|^2.0"
     },
     "autoload": {
         "psr-4": {
             "JoBins\\LaravelRepository\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JoBins\\LaravelRepository\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -41,6 +48,7 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
+            "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
         }
     },
