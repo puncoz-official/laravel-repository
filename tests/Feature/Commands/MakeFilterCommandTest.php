@@ -31,8 +31,8 @@ it('places nested filters in matching directories and namespaces', function (str
         ->toContain('class BookListFilter extends Filterable');
 })->with([
     'forward slash' => 'Admin/Book',
-    'backslash'     => 'Admin\Book',
-    'lowercase'     => 'admin/book',
+    'backslash' => 'Admin\Book',
+    'lowercase' => 'admin/book',
 ]);
 
 it('honours the configured filter path', function () {

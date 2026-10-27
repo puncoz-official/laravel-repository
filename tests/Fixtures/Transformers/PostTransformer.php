@@ -17,13 +17,13 @@ class PostTransformer extends TransformerAbstract
     public function transform(Post $post): array
     {
         return [
-            'id'    => $post->id,
+            'id' => $post->id,
             'title' => strtoupper($post->title),
         ];
     }
 
     public function includeComments(Post $post): Collection
     {
-        return $this->collection($post->comments, fn(Comment $comment) => ['body' => $comment->body]);
+        return $this->collection($post->comments, fn (Comment $comment) => ['body' => $comment->body]);
     }
 }

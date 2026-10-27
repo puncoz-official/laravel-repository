@@ -42,7 +42,7 @@ trait FilterableTrait
 
     public function removeFilter(string $filter): self
     {
-        $this->filters = $this->filters->reject(fn(FilterCriteria $criteria) => $criteria::class === $filter);
+        $this->filters = $this->filters->reject(fn (FilterCriteria $criteria) => $criteria::class === $filter);
 
         return $this;
     }
@@ -57,14 +57,14 @@ trait FilterableTrait
 
     protected function applyFilters(): self
     {
-        if ( $this->skipFilters === true ) {
+        if ($this->skipFilters === true) {
             return $this;
         }
 
         $filters = $this->getFilters();
 
-        if ( $filters->isNotEmpty() ) {
-            $filters->each(fn(FilterCriteria $filter) => $this->model = $filter->apply($this->model));
+        if ($filters->isNotEmpty()) {
+            $filters->each(fn (FilterCriteria $filter) => $this->model = $filter->apply($this->model));
         }
 
         return $this;

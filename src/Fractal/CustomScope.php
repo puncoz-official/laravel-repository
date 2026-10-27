@@ -59,8 +59,8 @@ class CustomScope implements JsonSerializable
      */
     public function __construct(Manager $manager, ResourceInterface $resource, $scopeIdentifier = null)
     {
-        $this->manager         = $manager;
-        $this->resource        = $resource;
+        $this->manager = $manager;
+        $this->resource = $resource;
         $this->scopeIdentifier = $scopeIdentifier;
     }
 
@@ -164,7 +164,7 @@ class CustomScope implements JsonSerializable
      */
     public function isRequested($checkScopeSegment)
     {
-        if ( $this->parentScopes ) {
+        if ($this->parentScopes) {
             $scopeArray = array_slice($this->parentScopes, 1);
             array_push($scopeArray, $this->scopeIdentifier, $checkScopeSegment);
         } else {
@@ -192,7 +192,7 @@ class CustomScope implements JsonSerializable
      */
     public function isExcluded($checkScopeSegment)
     {
-        if ( $this->parentScopes ) {
+        if ($this->parentScopes) {
             $scopeArray = array_slice($this->parentScopes, 1);
             array_push($scopeArray, $this->scopeIdentifier, $checkScopeSegment);
         } else {
@@ -235,7 +235,7 @@ class CustomScope implements JsonSerializable
 
         // If the serializer wants the includes to be side-loaded then we'll
         // serialize the included data and merge it with the data.
-        if ( $serializer->sideloadIncludes() ) {
+        if ($serializer->sideloadIncludes()) {
             //Filter out any relation that wasn't requested
             $rawIncludedData = array_map([$this, 'filterFieldsets'], $rawIncludedData);
 
@@ -245,7 +245,7 @@ class CustomScope implements JsonSerializable
             // about the included resources, it can do so now.
             $data = $serializer->injectData($data, $rawIncludedData);
 
-            if ( $this->isRootScope() ) {
+            if ($this->isRootScope()) {
                 // If the serializer wants to have a final word about all
                 // the objects that are sideloaded, it can do so now.
                 $includedData = $serializer->filterIncludes(
@@ -257,20 +257,20 @@ class CustomScope implements JsonSerializable
             $data = $data + $includedData;
         }
 
-        if ( !empty($this->availableIncludes) ) {
+        if (! empty($this->availableIncludes)) {
             $data = $serializer->injectAvailableIncludeData($data, $this->availableIncludes);
         }
 
-        if ( $this->resource instanceof Collection ) {
-            if ( $this->resource->hasCursor() ) {
+        if ($this->resource instanceof Collection) {
+            if ($this->resource->hasCursor()) {
                 $pagination = $serializer->cursor($this->resource->getCursor());
             } else {
-                if ( $this->resource->hasPaginator() ) {
+                if ($this->resource->hasPaginator()) {
                     $pagination = $serializer->paginator($this->resource->getPaginator());
                 }
             }
 
-            if ( !empty($pagination) ) {
+            if (! empty($pagination)) {
                 $this->resource->setMetaValue(key($pagination), current($pagination));
             }
         }
@@ -279,8 +279,8 @@ class CustomScope implements JsonSerializable
         $meta = $serializer->meta($this->resource->getMeta());
 
         // in case of returning NullResource we should return null and not to go with array_merge
-        if ( is_null($data) ) {
-            if ( !empty($meta) ) {
+        if (is_null($data)) {
+            if (! empty($meta)) {
                 return $meta;
             }
 
@@ -318,19 +318,19 @@ class CustomScope implements JsonSerializable
      */
     public function transformPrimitiveResource()
     {
-        if ( !($this->resource instanceof Primitive) ) {
+        if (! ($this->resource instanceof Primitive)) {
             throw new InvalidArgumentException(
                 'Argument $resource should be an instance of League\Fractal\Resource\Primitive'
             );
         }
 
         $transformer = $this->resource->getTransformer();
-        $data        = $this->resource->getData();
+        $data = $this->resource->getData();
 
-        if ( null === $transformer ) {
+        if (null === $transformer) {
             $transformedData = $data;
         } else {
-            if ( is_callable($transformer) ) {
+            if (is_callable($transformer)) {
                 $transformedData = call_user_func($transformer, $data);
             } else {
                 $transformer->setCurrentScope($this);
@@ -351,21 +351,21 @@ class CustomScope implements JsonSerializable
     protected function executeResourceTransformers()
     {
         $transformer = $this->resource->getTransformer();
-        $data        = $this->resource->getData();
+        $data = $this->resource->getData();
 
         $transformedData = $includedData = [];
 
-        if ( $this->resource instanceof Item ) {
+        if ($this->resource instanceof Item) {
             [$transformedData, $includedData[]] = $this->fireTransformer($transformer, $data);
         } else {
-            if ( $this->resource instanceof Collection ) {
+            if ($this->resource instanceof Collection) {
                 foreach ($data as $value) {
                     [$transformedData[], $includedData[]] = $this->fireTransformer($transformer, $value);
                 }
             } else {
-                if ( $this->resource instanceof NullResource ) {
+                if ($this->resource instanceof NullResource) {
                     $transformedData = null;
-                    $includedData    = [];
+                    $includedData = [];
                 } else {
                     throw new InvalidArgumentException(
                         'Argument $resource should be an instance of League\Fractal\Resource\Item or League\Fractal\Resource\Collection'
@@ -391,11 +391,11 @@ class CustomScope implements JsonSerializable
     {
         $resourceKey = $this->resource->getResourceKey();
 
-        if ( $this->resource instanceof Collection ) {
+        if ($this->resource instanceof Collection) {
             return $serializer->collection($resourceKey, $data);
         }
 
-        if ( $this->resource instanceof Item ) {
+        if ($this->resource instanceof Item) {
             return $serializer->item($resourceKey, $data);
         }
 
@@ -416,15 +416,15 @@ class CustomScope implements JsonSerializable
     {
         $includedData = [];
 
-        if ( is_callable($transformer) ) {
+        if (is_callable($transformer)) {
             $transformedData = call_user_func($transformer, $data);
         } else {
             $transformer->setCurrentScope($this);
             $transformedData = $transformer->transform($data);
         }
 
-        if ( $this->transformerHasIncludes($transformer) ) {
-            $includedData    = $this->fireIncludedTransformers($transformer, $data);
+        if ($this->transformerHasIncludes($transformer)) {
+            $includedData = $this->fireIncludedTransformers($transformer, $data);
             $transformedData = $this->manager->getSerializer()->mergeIncludes($transformedData, $includedData);
         }
 
@@ -462,14 +462,14 @@ class CustomScope implements JsonSerializable
      */
     protected function transformerHasIncludes($transformer)
     {
-        if ( !$transformer instanceof TransformerAbstract ) {
+        if (! $transformer instanceof TransformerAbstract) {
             return false;
         }
 
-        $defaultIncludes   = $transformer->getDefaultIncludes();
+        $defaultIncludes = $transformer->getDefaultIncludes();
         $availableIncludes = $transformer->getAvailableIncludes();
 
-        return !empty($defaultIncludes) || !empty($availableIncludes);
+        return ! empty($defaultIncludes) || ! empty($availableIncludes);
     }
 
     /**
@@ -494,10 +494,10 @@ class CustomScope implements JsonSerializable
      */
     protected function filterFieldsets(array $data)
     {
-        if ( !$this->hasFilterFieldset() ) {
+        if (! $this->hasFilterFieldset()) {
             return $data;
         }
-        $serializer        = $this->manager->getSerializer();
+        $serializer = $this->manager->getSerializer();
         $requestedFieldset = iterator_to_array($this->getFilterFieldset());
         //Build the array of requested fieldsets with the mandatory serializer fields
         $filterFieldset = array_flip(

@@ -9,5 +9,4 @@ namespace JoBins\LaravelRepository\Exceptions;
  */
 class LaravelRepositoryException extends \Exception
 {
-
 }

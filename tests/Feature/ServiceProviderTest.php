@@ -19,7 +19,7 @@ it('registers the package service provider', function () {
 it('registers its nested service providers', function (string $provider) {
     expect($this->app->getProviders($provider))->not->toBeEmpty();
 })->with([
-    'event provider'           => RepositoryEventServiceProvider::class,
+    'event provider' => RepositoryEventServiceProvider::class,
     'vendor override provider' => VendorOverrideServiceProvider::class,
 ]);
 
@@ -35,7 +35,7 @@ it('publishes the configuration file', function () {
     $paths = ServiceProvider::pathsToPublish(LaravelRepositoryServiceProvider::class);
     $source = realpath(__DIR__ . '/../../config/repository.php');
 
-    $published = collect($paths)->mapWithKeys(fn(string $target, string $from) => [realpath($from) => $target]);
+    $published = collect($paths)->mapWithKeys(fn (string $target, string $from) => [realpath($from) => $target]);
 
     expect($published->get($source))->toBe(config_path('repository.php'));
 });

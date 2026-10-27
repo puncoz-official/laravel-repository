@@ -21,7 +21,7 @@ class DataArraySerializer extends ArraySerializer
      */
     public function collection(?string $resourceKey, array $data): array
     {
-        if ( $resourceKey ) {
+        if ($resourceKey) {
             return [$resourceKey => $data];
         }
 

@@ -23,10 +23,10 @@ class Filterable implements FilterCriteria
         $query = $this->preHook($query, $this->filters);
 
         foreach ($this->filters as $key => $value) {
-            $key    = Str::of($key)->camel();
+            $key = Str::of($key)->camel();
             $method = "{$key}Filter";
 
-            if ( method_exists($this, $method) ) {
+            if (method_exists($this, $method)) {
                 $query = $this->{$method}($query, $value ?? null);
             }
         }

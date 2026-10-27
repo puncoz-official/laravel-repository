@@ -130,7 +130,7 @@ it('resets the query after each call', function () {
 it('exposes the underlying builder with filters and scope applied', function () {
     $builder = $this->repository
         ->filter(new PublishedFilter())
-        ->scopeQuery(fn(Builder $query) => $query->where('views', '>', 10))
+        ->scopeQuery(fn (Builder $query) => $query->where('views', '>', 10))
         ->getBuilder();
 
     expect($builder)->toBeInstanceOf(Builder::class)
@@ -233,7 +233,7 @@ it('dispatches filterable values to camel cased filter methods between hooks', f
 });
 
 it('applies a scope query to the next call only', function () {
-    $scoped = $this->repository->scopeQuery(fn(Builder $query) => $query->where('views', '>', 15))->all();
+    $scoped = $this->repository->scopeQuery(fn (Builder $query) => $query->where('views', '>', 15))->all();
 
     expect(postTitles($scoped))->toBe(['second', 'third'])
         ->and(postTitles($this->repository->all()))->toBe(['first', 'second', 'third']);
@@ -272,11 +272,11 @@ it('transforms a paginator and adds pagination meta', function () {
         ['id' => $this->second->id, 'title' => 'SECOND'],
     ])
         ->and($page['meta']['pagination'])->toMatchArray([
-            'total'        => 3,
-            'count'        => 2,
-            'per_page'     => 2,
+            'total' => 3,
+            'count' => 2,
+            'per_page' => 2,
             'current_page' => 1,
-            'total_pages'  => 2,
+            'total_pages' => 2,
         ]);
 });
 
@@ -289,8 +289,8 @@ it('adds requested includes', function () {
         ->find($this->first->id);
 
     expect($post)->toBe([
-        'id'       => $this->first->id,
-        'title'    => 'FIRST',
+        'id' => $this->first->id,
+        'title' => 'FIRST',
         'comments' => [['body' => 'nice']],
     ]);
 });

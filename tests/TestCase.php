@@ -15,7 +15,7 @@ abstract class TestCase extends Orchestra
 
     protected function tearDown(): void
     {
-        if ( $this->sandboxPath !== null ) {
+        if ($this->sandboxPath !== null) {
             (new Filesystem())->deleteDirectory($this->sandboxPath);
             $this->sandboxPath = null;
         }
@@ -32,9 +32,9 @@ abstract class TestCase extends Orchestra
     {
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
 

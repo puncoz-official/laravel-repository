@@ -43,7 +43,7 @@ trait EloquentModelTrait
             );
         }
 
-        if ( !$model instanceof Model ) {
+        if (! $model instanceof Model) {
             throw new LaravelRepositoryException(
                 "Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model"
             );
@@ -80,7 +80,7 @@ trait EloquentModelTrait
         $this->resetModel();
         $this->resetScope();
 
-        if ( $presentable ) {
+        if ($presentable) {
             return $this->present($result);
         }
 

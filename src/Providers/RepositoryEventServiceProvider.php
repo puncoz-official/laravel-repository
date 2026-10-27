@@ -23,7 +23,7 @@ class RepositoryEventServiceProvider extends ServiceProvider
         $events = app('events');
 
         collect($this->listen)->each(function (array $listeners, string $event) use ($events) {
-            collect($listeners)->each(fn(string $listener) => $events->listen($event, $listener));
+            collect($listeners)->each(fn (string $listener) => $events->listen($event, $listener));
         });
     }
 }

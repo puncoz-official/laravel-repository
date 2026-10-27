@@ -48,7 +48,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function all(array $columns = ['*']): Collection|array
     {
-        return $this->makeQueryBuilder(fn() => $this->model->get($columns));
+        return $this->makeQueryBuilder(fn () => $this->model->get($columns));
     }
 
     /**
@@ -62,7 +62,7 @@ abstract class LaravelRepository implements RepositoryInterface
     {
         $limit = $limit ?: config('repository.pagination.limit');
 
-        return $this->makeQueryBuilder(fn() => $this->model->paginate($limit, $columns));
+        return $this->makeQueryBuilder(fn () => $this->model->paginate($limit, $columns));
     }
 
     /**
@@ -75,7 +75,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function find(int|string $modelId, array $columns = ['*']): Model|array
     {
-        return $this->makeQueryBuilder(fn() => $this->model->findOrFail($modelId, $columns));
+        return $this->makeQueryBuilder(fn () => $this->model->findOrFail($modelId, $columns));
     }
 
     /**
@@ -88,7 +88,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function findByField(string $field, mixed $value, array $columns = ['*']): Model|array
     {
-        return $this->makeQueryBuilder(fn() => $this->model->where($field, $value)->firstOrFail($columns));
+        return $this->makeQueryBuilder(fn () => $this->model->where($field, $value)->firstOrFail($columns));
     }
 
     /**
@@ -101,7 +101,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function getByField(string $field, mixed $value, array $columns = ['*']): Collection|array
     {
-        return $this->makeQueryBuilder(fn() => $this->model->where($field, $value)->get($columns));
+        return $this->makeQueryBuilder(fn () => $this->model->where($field, $value)->get($columns));
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function getWhere(array $conditions, array $columns = ['*']): Collection|array
     {
-        return $this->makeQueryBuilder(fn() => $this->model->where($conditions)->get($columns));
+        return $this->makeQueryBuilder(fn () => $this->model->where($conditions)->get($columns));
     }
 
     /**
@@ -126,7 +126,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function getWhereIn(string $field, array $values, array $columns = ['*']): Collection|array
     {
-        return $this->makeQueryBuilder(fn() => $this->model->whereIn($field, $values)->get($columns));
+        return $this->makeQueryBuilder(fn () => $this->model->whereIn($field, $values)->get($columns));
     }
 
     /**
@@ -139,7 +139,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function getWhereNotIn(string $field, array $values, array $columns = ['*']): Collection|array
     {
-        return $this->makeQueryBuilder(fn() => $this->model->whereNotIn($field, $values)->get($columns));
+        return $this->makeQueryBuilder(fn () => $this->model->whereNotIn($field, $values)->get($columns));
     }
 
     /**
@@ -152,7 +152,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function getWhereBetween(string $field, array $values, array $columns = ['*']): Collection|array
     {
-        return $this->makeQueryBuilder(fn() => $this->model->whereBetween($field, $values)->get($columns));
+        return $this->makeQueryBuilder(fn () => $this->model->whereBetween($field, $values)->get($columns));
     }
 
     /**
@@ -163,7 +163,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function create(array $data): Model|array
     {
-        return $this->makeQueryBuilder(fn() => $this->model->create($data));
+        return $this->makeQueryBuilder(fn () => $this->model->create($data));
     }
 
     /**
@@ -216,7 +216,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function delete(int|string $modelId): void
     {
-        $this->makeQueryBuilder(fn() => $this->model->find($modelId)->delete(), false);
+        $this->makeQueryBuilder(fn () => $this->model->find($modelId)->delete(), false);
     }
 
     /**
@@ -226,7 +226,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function deleteWhere(array $where): void
     {
-        $this->makeQueryBuilder(fn() => $this->model->where($where)->delete(), false);
+        $this->makeQueryBuilder(fn () => $this->model->where($where)->delete(), false);
     }
 
     /**
@@ -238,7 +238,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function deleteWhereIn(string $column, array $values): void
     {
-        $this->makeQueryBuilder(fn() => $this->model->whereIn($column, $values)->delete(), false);
+        $this->makeQueryBuilder(fn () => $this->model->whereIn($column, $values)->delete(), false);
     }
 
     /**
@@ -250,7 +250,7 @@ abstract class LaravelRepository implements RepositoryInterface
      */
     public function deleteWhereNotIn(string $column, array $values): void
     {
-        $this->makeQueryBuilder(fn() => $this->model->whereNotIn($column, $values)->delete(), false);
+        $this->makeQueryBuilder(fn () => $this->model->whereNotIn($column, $values)->delete(), false);
     }
 
     public function orderBy(string $column, string $direction = 'asc'): self

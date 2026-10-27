@@ -43,7 +43,7 @@ it('places nested repositories in matching directories and namespaces', function
         ->toContain('use App\Models\Common\Item;')
         ->toContain('use App\Repositories\Common\ItemRepository;');
 })->with([
-    'studly name'    => 'Common/Item',
+    'studly name' => 'Common/Item',
     'lowercase name' => 'common/item',
 ]);
 

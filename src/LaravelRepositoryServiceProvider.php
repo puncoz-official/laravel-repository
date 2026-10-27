@@ -6,8 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use JoBins\LaravelRepository\Console\Commands\MakeFilterCommand;
 use JoBins\LaravelRepository\Console\Commands\MakeRepositoryCommand;
 use JoBins\LaravelRepository\Console\Commands\MakeTransformerCommand;
-use JoBins\LaravelRepository\Providers\VendorOverrideServiceProvider;
 use JoBins\LaravelRepository\Providers\RepositoryEventServiceProvider;
+use JoBins\LaravelRepository\Providers\VendorOverrideServiceProvider;
 
 /**
  * Class LaravelRepositoryServiceProvider

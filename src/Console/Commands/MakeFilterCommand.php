@@ -4,7 +4,6 @@ namespace JoBins\LaravelRepository\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 
 class MakeFilterCommand extends Command
 {
@@ -15,7 +14,7 @@ class MakeFilterCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->files = new Filesystem;
+        $this->files = new Filesystem();
     }
 
     public function handle()
@@ -29,8 +28,8 @@ class MakeFilterCommand extends Command
         $baseNamespace = str_replace('/', '\\', trim(str_replace(app_path(), 'App', $basePath), '/'));
 
         // Ensure uniform case handling (ucfirst)
-        $parts        = explode('/', str_replace('\\', '/', $name));
-        $className    = ucfirst(array_pop($parts)) . 'ListFilter';
+        $parts = explode('/', str_replace('\\', '/', $name));
+        $className = ucfirst(array_pop($parts)) . 'ListFilter';
         $subNamespace = implode('\\', array_map('ucfirst', $parts));
 
         // Construct full namespace dynamically
@@ -41,7 +40,7 @@ class MakeFilterCommand extends Command
         $targetDirectory = $basePath . ($subNamespace ? '/' . str_replace('\\', '/', $subNamespace) : '');
 
         // Ensure directory exists
-        if (!$this->files->exists($targetDirectory)) {
+        if (! $this->files->exists($targetDirectory)) {
             $this->files->makeDirectory($targetDirectory, 0755, true);
         }
 
@@ -74,6 +73,7 @@ class MakeFilterCommand extends Command
         foreach ($replacements as $search => $replace) {
             $content = str_replace($search, $replace, $content);
         }
+
         return $content;
     }
 }

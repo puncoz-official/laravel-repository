@@ -33,8 +33,8 @@ it('places nested transformers in matching directories and namespaces', function
         ->toContain('$bookItem->id');
 })->with([
     'forward slash' => 'Common/BookItem',
-    'backslash'     => 'Common\BookItem',
-    'lowercase'     => 'common/bookItem',
+    'backslash' => 'Common\BookItem',
+    'lowercase' => 'common/bookItem',
 ]);
 
 it('honours the configured transformer path', function () {

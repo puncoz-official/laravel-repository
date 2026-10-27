@@ -4,7 +4,6 @@ namespace JoBins\LaravelRepository\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 
 class MakeRepositoryCommand extends Command
 {
@@ -17,21 +16,21 @@ class MakeRepositoryCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->files = new Filesystem;
+        $this->files = new Filesystem();
     }
 
     public function handle()
     {
         // Retrieve the input
-        $name             = $this->argument('name');
+        $name = $this->argument('name');
         $repositorySuffix = config('repository.repository_suffix', 'EloquentRepository');
-        $interfaceSuffix  = config('repository.interface_suffix', 'Repository');
+        $interfaceSuffix = config('repository.interface_suffix', 'Repository');
         $basePathRelative = config('repository.repository_path', 'app/Repositories');
 
         // Split the path and class name
-        $parts         = explode('/', $name);
-        $baseName      = ucfirst(array_pop($parts));
-        $className     = $baseName . $repositorySuffix;
+        $parts = explode('/', $name);
+        $baseName = ucfirst(array_pop($parts));
+        $className = $baseName . $repositorySuffix;
         $interfaceName = $baseName . $interfaceSuffix;
 
         // Capitalize subdirectories correctly
@@ -47,7 +46,7 @@ class MakeRepositoryCommand extends Command
         $targetDirectory = base_path($basePath);
 
         // Ensure the directory exists
-        if (!$this->files->exists($targetDirectory)) {
+        if (! $this->files->exists($targetDirectory)) {
             $this->files->makeDirectory($targetDirectory, 0755, true);
         }
 
@@ -66,7 +65,7 @@ class MakeRepositoryCommand extends Command
         }
 
         // Ensure interface directory exists (if required by configuration)
-        if ($interfaceSubFolder && !$this->files->exists($interfaceDirectory)) {
+        if ($interfaceSubFolder && ! $this->files->exists($interfaceDirectory)) {
             $this->files->makeDirectory($interfaceDirectory, 0755, true);
         }
 
@@ -75,21 +74,21 @@ class MakeRepositoryCommand extends Command
 
         // Model namespace handling (assuming models are stored under 'App\Models')
         $modelNamespace = 'App\Models' . ($subNamespace ? '\\' . $subNamespace : '');
-        $modelName      = $this->option('model') ?? $baseName;
+        $modelName = $this->option('model') ?? $baseName;
 
         // Prepare the replacement values for stubs
         $stubReplacements = [
-            '{{ namespace }}'          => $classNamespace,
-            '{{ className }}'          => $className,
-            '{{ interfaceName }}'      => $interfaceName,
-            '{{ modelName }}'          => $modelName,
-            '{{ modelNamespace }}'     => $modelNamespace,
+            '{{ namespace }}' => $classNamespace,
+            '{{ className }}' => $className,
+            '{{ interfaceName }}' => $interfaceName,
+            '{{ modelName }}' => $modelName,
+            '{{ modelNamespace }}' => $modelNamespace,
             '{{ interfaceNamespace }}' => $interfaceNameSpace,
         ];
 
         // Load and fill the repository and interface stubs
         $repositoryStub = $this->fillStub($this->getStubPath('repository.stub'), $stubReplacements);
-        $interfaceStub  = $this->fillStub($this->getStubPath('repository.interface.stub'), $stubReplacements);
+        $interfaceStub = $this->fillStub($this->getStubPath('repository.interface.stub'), $stubReplacements);
 
         // Write the generated repository and interface to disk
         $this->files->put($repositoryFile, $repositoryStub);
@@ -110,6 +109,7 @@ class MakeRepositoryCommand extends Command
         foreach ($replacements as $search => $replace) {
             $content = str_replace($search, $replace, $content);
         }
+
         return $content;
     }
 }
