@@ -23,9 +23,9 @@ use League\Fractal\TransformerAbstract;
  */
 trait Presentable
 {
-    protected ?TransformerAbstract $transformer     = null;
+    protected ?TransformerAbstract $transformer = null;
     protected Manager              $fractal;
-    protected array                $includes        = [];
+    protected array                $includes = [];
     protected bool                 $skipTransformer = false;
 
     /**
@@ -35,7 +35,7 @@ trait Presentable
      */
     public function setTransformer(TransformerAbstract|string $transformer): self
     {
-        if ( is_string($transformer) ) {
+        if (is_string($transformer)) {
             $transformer = app()->make($transformer);
         }
 
@@ -53,11 +53,11 @@ trait Presentable
 
     public function setIncludes(array|string $includes): self
     {
-        if ( is_array($includes) ) {
+        if (is_array($includes)) {
             $this->includes = [...$this->includes, ...$includes];
         }
 
-        if ( is_string($includes) ) {
+        if (is_string($includes)) {
             $this->includes = [...$this->includes, $includes];
         }
 
@@ -67,7 +67,7 @@ trait Presentable
     public function present(
         Collection|AbstractPaginator|Model $data
     ): Collection|AbstractPaginator|Model|array {
-        if ( $this->skipTransformer || !$this->transformer ) {
+        if ($this->skipTransformer || ! $this->transformer) {
             return $data;
         }
 
@@ -93,7 +93,7 @@ trait Presentable
 
     protected function parseIncludes()
     {
-        if ( count($this->includes) ) {
+        if (count($this->includes)) {
             $this->fractal->parseIncludes($this->includes);
         }
     }
@@ -105,10 +105,10 @@ trait Presentable
 
     protected function getResource(Collection|AbstractPaginator|Model $data): ResourceInterface
     {
-        if ( $data instanceof Collection ) {
+        if ($data instanceof Collection) {
             return $this->transformCollection($data);
         }
-        if ( $data instanceof AbstractPaginator ) {
+        if ($data instanceof AbstractPaginator) {
             return $this->transformPaginator($data);
         }
 
@@ -123,7 +123,7 @@ trait Presentable
     protected function transformPaginator(AbstractPaginator|LengthAwarePaginator|Paginator $data): ResourceCollection
     {
         $collection = $data->getCollection();
-        $resource   = new ResourceCollection($collection, $this->transformer);
+        $resource = new ResourceCollection($collection, $this->transformer);
         $resource->setPaginator(new IlluminatePaginatorAdapter($data));
 
         return $resource;

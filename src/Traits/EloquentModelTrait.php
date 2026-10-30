@@ -5,6 +5,7 @@ namespace JoBins\LaravelRepository\Traits;
 use Closure;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
@@ -17,6 +18,12 @@ use JoBins\LaravelRepository\Exceptions\LaravelRepositoryException;
  */
 trait EloquentModelTrait
 {
+    /**
+     * The native type stays the Builder contract so repositories that redeclare `protected Builder $model;`
+     * and scopes returning other contract implementations (e.g. relations) keep working.
+     *
+     * @var EloquentBuilder
+     */
     protected Builder $model;
 
     abstract public function model(): string;
@@ -42,7 +49,7 @@ trait EloquentModelTrait
             );
         }
 
-        if ( !$model instanceof Model ) {
+        if (! $model instanceof Model) {
             throw new LaravelRepositoryException(
                 "Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model"
             );
@@ -79,7 +86,7 @@ trait EloquentModelTrait
         $this->resetModel();
         $this->resetScope();
 
-        if ( $presentable ) {
+        if ($presentable) {
             return $this->present($result);
         }
 

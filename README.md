@@ -409,6 +409,23 @@ $rawUsers = $repository
     ->all(); // Returns raw data
 ```
 
+## Testing
+
+The test suite uses [Pest](https://pestphp.com) on top of [Orchestra Testbench](https://packages.tools/testbench) with an in-memory SQLite database, so no external services are needed.
+
+```bash
+composer install
+composer test          # run the Pest suite
+composer test-coverage # run the suite with code coverage (requires Xdebug or PCOV)
+composer analyse       # run PHPStan (Larastan) static analysis on src/ and config/
+```
+
+- `tests/Unit` covers standalone classes such as the serializer and the Fractal param bag.
+- `tests/Feature` boots the package inside Testbench and covers the service provider, the `make:repository`, `make:transformer` and `make:filter` commands, and the `LaravelRepository` base class.
+- Generator command tests write into a temporary base path that is removed after each test.
+
+Static analysis settings live in `phpstan.neon.dist`. CI runs Pest and PHPStan for every supported PHP and Laravel combination (see `.github/workflows/run-tests.yml`).
+
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.

@@ -35,7 +35,6 @@ interface RepositoryInterface
     /** ********************** /Filters ****************************** */
 
     /** ********************** Transformers ************************** */
-
     public function setTransformer(TransformerAbstract|string $transformer): self;
 
     public function resetTransformer(): self;
@@ -51,7 +50,6 @@ interface RepositoryInterface
     /** ********************* /Transformers ************************** */
 
     /** ********************* Scopes ********************************* */
-
     public function scopeQuery(Closure $scopeQuery): self;
 
     public function getBuilder(): Builder;

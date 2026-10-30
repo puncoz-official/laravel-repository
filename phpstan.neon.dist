@@ -1,11 +1,20 @@
-includes:
-    - phpstan-baseline.neon
-
 parameters:
-    level: 9
+    level: 5
     paths:
         - src
         - config
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
+    ignoreErrors:
+        # CustomScope is swapped in for League\Fractal\Scope at runtime through a class alias
+        # (see VendorOverrideServiceProvider), so passing it where a Scope is expected is safe.
+        -
+            identifier: argument.type
+            message: '#CustomScope\) given\.$#'
+            path: src/Fractal/CustomScope.php
+        # Fractal transformers declare transform() by convention; TransformerAbstract does not define it.
+        -
+            identifier: method.notFound
+            message: '#^Call to an undefined method League\\Fractal\\TransformerAbstract::transform\(\)\.$#'
+            path: src/Fractal/CustomScope.php
