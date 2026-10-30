@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-repository` will be documented in this file.
 
+## v1.2.0 - 2026-10-30
+
+### What's Changed
+
+* Add Pest test suite and Larastan static analysis by @jobins-bedram in https://github.com/puncoz-official/laravel-repository/pull/8
+
+### New Contributors
+
+* @jobins-bedram made their first contribution in https://github.com/puncoz-official/laravel-repository/pull/8
+
+**Full Changelog**: https://github.com/puncoz-official/laravel-repository/compare/v1.1.1...v1.2.0
+
 ## Unreleased
 
 ### Changed
